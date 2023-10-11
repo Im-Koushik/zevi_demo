@@ -127,7 +127,7 @@ const ProductList = () => {
         />
         <div className="absolute flex justify-center items-center w-screen top-11">
           <div className="w-[40%]">
-            <SearchBar />
+            <SearchBar isHome={false} />
           </div>
         </div>
       </div>
