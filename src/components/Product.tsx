@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import heart from "../assets/images/love.svg";
-import whiteheart from "../assets/images/icons8-heart-100.png";
+import heart from "../assets/details/love.svg";
+import whiteheart from "../assets/details/icons8-heart-100.png";
 const Product = ({
   id,
   name,
@@ -55,7 +55,7 @@ const Product = ({
           className="h-[280px] rounded-t-sm w-full object-cover"
           alt=""
         />
-        <div className="absolute flex justify-center items-center bottom-0 left-0 w-full bg-blue-500 text-white text-center p-2 opacity-0 group-hover:opacity-60 cursor-pointer">
+        <div className="absolute flex justify-center items-center bottom-0 left-0 w-full bg-indigo-500 text-white text-center p-2 opacity-0 group-hover:opacity-60 cursor-pointer">
           View Product
         </div>
       </div>
@@ -65,14 +65,14 @@ const Product = ({
           onClick={addWishlist}
           src={heart}
           alt="not-wishlist"
-          className="h-7 w-7 absolute top-8 right-4"
+          className="h-7 w-7 absolute top-8 right-4 cursor-pointer"
         />
       ) : (
         <img
           onClick={addWishlist}
           src={whiteheart}
           alt="wishlist"
-          className="h-7 w-7 absolute top-8 right-4"
+          className="h-7 w-7 absolute top-8 right-4 cursor-pointer"
         />
       )}
 
