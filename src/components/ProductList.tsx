@@ -40,6 +40,72 @@ const ProductList = () => {
   const [brandsOpen, setBrandsOpen] = useState(false);
   const [priceRangeOpen, setPriceRangeOpen] = useState(false);
   const [ratingOpen, setRatingOpen] = useState(false);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([]);
+  const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
+
+  const getPriceRange = (price: number) => {
+    if (price < 500) {
+      return "Under 500";
+    } else if (price >= 500 && price < 1000) {
+      return "500 To 1000";
+    } else {
+      return "1000 +";
+    }
+  };
+
+  const togglePriceRange = (priceRange: string) => {
+    if (selectedPriceRanges.includes(priceRange)) {
+      setSelectedPriceRanges(
+        selectedPriceRanges.filter((range) => range !== priceRange)
+      );
+    } else {
+      setSelectedPriceRanges([...selectedPriceRanges, priceRange]);
+    }
+  };
+
+  const toggleBrand = (brand: string) => {
+    if (selectedBrands.includes(brand)) {
+      setSelectedBrands(selectedBrands.filter((b) => b !== brand));
+    } else {
+      setSelectedBrands([...selectedBrands, brand]);
+    }
+  };
+
+  const filteredProducts = products.filter((product) => {
+    if (
+      selectedRatings.length === 0 &&
+      selectedPriceRanges.length === 0 &&
+      selectedBrands.length === 0
+    ) {
+      return true;
+    }
+
+    const isRatingMatch =
+      selectedRatings.length === 0 || selectedRatings.includes(product.rating);
+    const isPriceMatch =
+      selectedPriceRanges.length === 0 ||
+      selectedPriceRanges.includes(getPriceRange(product.price));
+    const isBrandMatch =
+      selectedBrands.length === 0 || selectedBrands.includes(product.brand);
+
+    return isRatingMatch && isPriceMatch && isBrandMatch;
+  });
+
+  const toggleRating = (rating: number) => {
+    if (selectedRatings.includes(rating)) {
+      setSelectedRatings(selectedRatings.filter((r) => r !== rating));
+    } else {
+      setSelectedRatings([...selectedRatings, rating]);
+    }
+  };
+
+  // const filteredProducts = products.filter((product) => {
+  //   if (selectedRatings.length === 0) {
+  //     return true;
+  //   }
+  //   return selectedRatings.includes(product.rating);
+  // });
 
   const toggleBrands = () => {
     setBrandsOpen(!brandsOpen);
@@ -69,20 +135,24 @@ const ProductList = () => {
         <div className="col-span-3">
           <div className="px-10 flex flex-col justify-center ">
             <h2 className="font-sans text-4xl ">Search Results</h2>
-            <div className="mt-8 flex gap-4 flex-col">
+            <div className="mt-14 flex gap-4 flex-col">
               <div>
                 <div
                   className="flex justify-between uppercase cursor-pointer"
                   onClick={toggleBrands}
                 >
-                  <h3 className="font-bold mb-4">Brand</h3>
+                  <h3 className="font-semibold mb-4">Brand</h3>
                   <BsChevronDown />
                 </div>
                 {brandsOpen && (
                   <div className="flex flex-col gap-2">
                     {brands.map((brand, index) => (
                       <div className="flex gap-2 items-center" key={index}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          checked={selectedBrands.includes(brand)}
+                          onChange={() => toggleBrand(brand)}
+                        />
                         {brand}
                       </div>
                     ))}
@@ -95,14 +165,18 @@ const ProductList = () => {
                   className="flex justify-between uppercase cursor-pointer"
                   onClick={togglePriceRangeOpen}
                 >
-                  <h3 className="font-bold mb-4">Price Range</h3>
+                  <h3 className="font-semibold mb-4">Price Range</h3>
                   <BsChevronDown />
                 </div>
                 {priceRangeOpen && (
                   <div className="flex flex-col gap-2">
                     {priceRanges.map((priceRange, index) => (
                       <div className="flex gap-2 items-center" key={index}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          checked={selectedPriceRanges.includes(priceRange)}
+                          onChange={() => togglePriceRange(priceRange)}
+                        />
                         {priceRange}
                       </div>
                     ))}
@@ -115,14 +189,18 @@ const ProductList = () => {
                   className="flex justify-between uppercase cursor-pointer"
                   onClick={toggleRatingOpen}
                 >
-                  <h3 className="font-bold mb-4">Rating</h3>
+                  <h3 className="font-semibold mb-4">Rating</h3>
                   <BsChevronDown />
                 </div>
                 {ratingOpen && (
                   <div className="flex flex-col gap-2">
                     {ratings.map((rating, index) => (
                       <div className="flex gap-3 items-center" key={index}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          checked={selectedRatings.includes(rating)}
+                          onChange={() => toggleRating(rating)}
+                        />
                         <div className="flex">
                           {Array.from({ length: rating }).map((_, index) => (
                             <RatedStar key={index} />
@@ -144,7 +222,7 @@ const ProductList = () => {
 
         <div className="col-span-7 mt-5">
           <div className="grid grid-cols-4 gap-6">
-            {productList.map((product) => (
+            {filteredProducts.map((product) => (
               <div key={product.id}>
                 <Product {...product} />
               </div>
