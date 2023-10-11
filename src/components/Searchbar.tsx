@@ -13,14 +13,14 @@ const SearchBar = ({ isHome }: { isHome: boolean }) => {
     setShowTrendCard(false);
   };
   return (
-    <div className="relative">
+    <div className="relative" tabIndex={0}>
       <input
         type="search"
         id="default-search"
         className="block w-full p-4 pl-10 text-2xl border rounded-2xl focus:outline-none"
         placeholder="Search"
         onFocus={handleFocus}
-        onBlur={handleBlur}
+        // onBlur={handleBlur}
         required
       />
       <div className="absolute inset-y-0 right-12 flex items-center pl-3 pointer-events-none">

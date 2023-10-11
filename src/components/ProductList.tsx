@@ -6,6 +6,7 @@ import Product from "./Product";
 import { BsChevronDown } from "react-icons/bs";
 import RatedStar from "./RatedStar";
 import UnratedStar from "./UnratedStar";
+import { Link } from "react-router-dom";
 
 const ProductList = () => {
   const [productList, setProductList] = useState(products);
@@ -89,11 +90,13 @@ const ProductList = () => {
   return (
     <div>
       <div className="relative h-[150px] flex justify-center items-center ">
-        <img
-          src={logoImg}
-          alt="Logo"
-          className="absolute top-11 right-11 w-20"
-        />
+        <Link to="/">
+          <img
+            src={logoImg}
+            alt="Logo"
+            className="absolute top-11 right-11 w-20 cursor-pointer  z-10"
+          />
+        </Link>
         <div className="absolute flex justify-center items-center w-screen top-11">
           <div className="w-[40%]">
             <SearchBar isHome={false} />
